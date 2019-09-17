@@ -1,0 +1,701 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[swedish, english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+%\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{units}
+\usepackage{icomma}
+\usepackage{color}
+\usepackage{float}
+%\usepackage{amsfonts} %not in use
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{bbm}
+\usepackage{enumerate}
+\usepackage{textcomp}
+\usepackage{enumitem}
+\usepackage{alltt}
+\usepackage{datetime}
+\usepackage[top=2in, bottom=1.5in, left=1.2in, right=1.2in]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref} \hypersetup{ colorlinks=true,linktoc=all, linkcolor=blue}
+
+\usepackage{bm}
+\usepackage{fancyhdr}
+\pagestyle{fancy} 
+\fancyhead{} % clear all header fields
+\fancyhead[L]{\normalfont\scshape\small \selectfont Edvin Listo Zec}
+\fancyhead[R]{\normalfont\scshape\small \selectfont Theorems\&Proofs}
+\newcommand{\N}{\ensuremath{\mathbbm{N}}}
+\newcommand{\Z}{\ensuremath{\mathbbm{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbbm{Q}}}
+\newcommand{\R}{\ensuremath{\mathbbm{R}}}
+\newcommand{\C}{\ensuremath{\mathbbm{C}}}
+\newcommand{\rd}{\ensuremath{\mathrm{d}}}
+\newcommand{\id}{\ensuremath{\,\rd}}
+% % command below makes a bold x, v and a
+% % used for vector notation.
+\newcommand{\xb}{\ensuremath{\mathbf{x}}}
+\newcommand{\ab}{\ensuremath{\mathbf{a}}}
+\newcommand{\vb}{\ensuremath{\mathbf{v}}}
+
+%% http://en.wikibooks.org/wiki/LaTeX/Advanced_Mathematics
+
+%% //ROBIN: ADDED CODE BELOW 2014-12-08, TO SUPPORT FOR MATLAB CODE
+%% TO INPUT MATLAB CODE INPUT: \lstinputlisting[language=matlab]{source_filename.m}
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+
+\title{Theorems and proofs for Nonlinear optimisation}
+\author{Edvin Listo Zec \\ \texttt{edvinli@student.chalmers.se}}
+\date{December 2014}
+
+\begin{document}
+\maketitle
+\selectlanguage{english}
+\thispagestyle{empty}
+\centerline{\textbf{Introduction}}
+\noindent This text is written as an aid for those that are taking the course TMA947 Nonlinear optimisation 2014/15. It contains the recommended theorems and proofs from the year 2014/15 taken from the book An Introduction to Continuous Optimization (second edition) by Niclas Andréasson, Anton Evgrafov, Michael Patriksson, Emil Gustavsson and Magnus Önnheim.
+\newline
+ \newline
+ 
+%\centerline{\textbf{Abstract}}
+%\noindent Text
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+
+\section{Separation Theorem}
+\subsubsection*{Theorem}
+Suppose that the set $C\subseteq \mathbb{R}^n$ is nonempty, closed and convex. Suppose further that the point $\bm{y}\not\in C$. Then it holds that $\exists$ a vector $\boldsymbol{\pi} \neq \bm{0}^n$ and $\alpha \in \mathbb{R}$ such that $\boldsymbol{\pi}^\text{T}\bm{y}>\alpha$ and $\boldsymbol{\pi}^\text{T}\bm{x}\leq\alpha,\; \forall \bm{x}\in C$.
+\subsubsection*{Proof}
+Define a function $f : \mathbb{R}^n \rightarrow \mathbb{R}$ as $f(\bm{x}) := \|\bm{x-y}\|^2/2$, $\bm{x}\in\mathbb{R}^n$. From Weierstrass' theorem we get that $\exists$ a minimum $\bm{\tilde{x}}$ of $f$ over $C$. By the first-order optimality conditions, the minimum is characterised by the variational inequality:
+\begin{equation*}
+(\bm{y-\tilde{x}})^\text{T}(\bm{x-\tilde{x}})\leq 0,\;\; \forall \bm{x}\in C \text{ (since } -\nabla f(\bm{\tilde{x}})=\bm{y-\tilde{x}})
+\end{equation*}
+We now define $\boldsymbol{\pi} := \bm{y-\tilde{x}}$. Since $\bm{y}\not\in C$, $\boldsymbol{\pi}$ will be non-zero. Let $\alpha := (\bm{y-\tilde{x}})^\text{T}\bm{\tilde{x}}$. The above variational inequality gives now that $\boldsymbol{\pi}^\text{T}\bm{x} \leq \boldsymbol{\pi}^\text{T}\bm{\tilde{x}} = \alpha$, $\forall \bm{x}\in C$, while $\boldsymbol{\pi}^\text{T}\bm{y}-\alpha = (\bm{y-\tilde{x}})^\text{T}(\bm{y-\tilde{x}}) = \| \bm{y-\tilde{x}}\|^2 > 0$. $\square$
+
+\section{Farkas' Lemma}
+\subsubsection*{Theorem}
+Consider the systems:
+\begin{equation}
+\begin{split}
+\bm{Ax = b},\\
+\bm{x}\geq \bm{0}^n,
+\label{sys1}
+\end{split}
+\end{equation}
+and
+\begin{equation}
+\begin{split}
+\bm{A}^\text{T}\bm{y}\leq \bm{0}^n,\\
+\bm{b}^\text{T}\bm{y}>0.
+\label{sys2}
+\end{split}
+\end{equation}
+If $\bm{A}\in \mathbb{R}^{m\times n}$ and $\bm{b} \in \mathbb{R}^m$, then \textit{exactly one} of the systems \ref{sys1} and \ref{sys2} has a feasible solution, and the other system is inconsistent.
+\subsubsection*{Proof}
+Assume that system \ref{sys1} has a solution $\bm{x}$, then
+\begin{equation*}
+\bm{b}^\text{T}\bm{y} = \bm{x}^\text{T}\bm{A}^\text{T}\bm{y} > 0
+\end{equation*}
+But $\bm{x}\geq \bm{0}^n \Rightarrow \bm{A}^\text{T}\bm{y}\leq\bm{0}^n$ cannot hold $\Rightarrow$ system \ref{sys2} is infeasible.
+\\\\
+Assume now that \ref{sys2} is infeasible and consider the linear program:
+\begin{equation*}
+\begin{aligned}
+& \text{maximise}
+& & \bm{b^\text{T}\bm{y}} \\
+& \text{subject to}
+& & \bm{A}^\text{T}\bm{y}\leq\bm{0}^n,\\
+&&& \bm{y} \text{ free},
+\end{aligned}
+\end{equation*}
+and its dual program:
+\begin{equation*}
+\begin{aligned}
+& {\text{minimise}}
+& & (\bm{0}^n)^\text{T}\bm{x} \\
+& \text{subject to}
+& & \bm{Ax=b},\\
+&&& \bm{x}\geq\bm{0}^n.
+\end{aligned}
+\end{equation*}
+\noindent $\bm{y}=\bm{0}^m$ will be an optimal solution to the primal program, since system \ref{sys2} is infeasible. The Strong Duality Theorem implies thus that there is an optimal solution to the dual program, which is feasible in system \ref{sys1}.
+\\\\
+We have thus proved the equivalence
+\begin{equation*}
+(\ref{sys1}) \Leftrightarrow \neg (\ref{sys2}).
+\end{equation*}
+Which is logically equivalent to
+\begin{equation*}
+\neg (\ref{sys1}) \Leftrightarrow (\ref{sys2}).
+\end{equation*}
+This means that \textit{exactly one} of the systems \ref{sys1} and \ref{sys2} has a solution. $\square$
+
+\section{Characterization of convex functions in $C^1$}
+\subsubsection*{Theorem}
+If $f \in C^1$ on an open convex set S, then:
+\begin{enumerate}[label={(\alph*)}]
+    \item $f$ is convex on $S \Leftrightarrow f(\bm{y}) \geq f(\bm{x}) + \nabla f(\bm{x})^\text{T}(\bm{y-x}),\;\; \forall \bm{x,y}\in S$.
+    \item $f$ is convex on $S \Leftrightarrow [\nabla f(\bm{x})-\nabla f(\bm{y})]^{\text{T}}(\bm{x-y})\geq 0,\;\; \forall \bm{x,y}\in S$.
+\end{enumerate}
+\subsubsection*{Proof}
+(a) $[\Rightarrow]$ Take $\bm{x}^1,\bm{x}^2 \in S$ and $\lambda \in (0,1)$. Then we have that:
+\[
+    \lambda f(\bm{x}^1)+(1-\lambda)f(\bm{x}^2) \geq f(\lambda \bm{x}^1 + (1-\lambda) \bm{x}^2)
+\]
+\[
+    \Leftrightarrow
+\]
+\[
+    f(\bm{x}^1) - f(\bm{x}^2) \geq (1/\lambda)[f(\lambda \bm{x}^1 + (1-\lambda)\bm{x}^2) - f(\bm{x}^2)],
+\]
+which holds since $\lambda>0$. If we now let $\lambda \rightarrow 0^+$, the right-hand side of the above inequality goes to the directional derivative of $f$ at $\bm{x}^2$ in the direction of $(\bm{x}^1-\bm{x}^2)$. The limit thus becomes:
+\begin{equation*}
+f(\bm{x}^1) - f(\bm{x}^2) \geq \nabla f(\bm{x}^2)^{\text{T}}(\bm{x}^1-\bm{x}^2).
+\end{equation*}
+The result follows.
+\\\\
+$[\Leftarrow]$ We have that:
+
+\begin{equation*}
+\begin{split}
+f(\bm{x}^1) \geq f(\lambda \bm{x}^1 + (1-\lambda)\bm{x}^2) + (1-\lambda)\nabla f(\lambda \bm{x}^1 + (1-\lambda)\bm{x}^2)^{\text{T}}(\bm{x}^1-\bm{x}^2),\\
+f(\bm{x}^2) \geq f(\lambda \bm{x}^1 + (1-\lambda)\bm{x}^2) + \lambda\nabla f(\lambda \bm{x}^1 + (1-\lambda)\bm{x}^2)^{\text{T}}(\bm{x}^2-\bm{x}^1).\hspace{21pt}
+\end{split}
+\end{equation*}
+We multiply the inequalities with $\lambda$ and $(1-\lambda)$, respectively, and add them together. This yields the result sought.
+\\\\
+(b)$[\Rightarrow]$ We use (a) and the two inequalities:
+\begin{equation*}
+\begin{split}
+f(\bm{y})\geq f(\bm{x})+\nabla f(\bm{x})^{\text{T}}(\bm{y-x}),\quad \bm{x,y}\in S,\\
+f(\bm{x})\geq f(\bm{y})+\nabla f(\bm{y})^{\text{T}}(\bm{x-y}),\quad \bm{x,y}\in S.
+\end{split}
+\end{equation*}
+If we add them together, we get that $[\nabla f(\bm{x})-\nabla f(\bm{y})]^{\text{T}}(\bm{x-y})\geq 0,\;\; \forall \bm{x,y}\in S$.
+\\\\
+$[\Leftarrow]$ We get from the mean-value theorem that
+\begin{equation}
+\label{meanvalue}
+f(\bm{x}^2)-f(\bm{x}^1) = \nabla f(\bm{x})^{\text{T}}(\bm{x}^2-\bm{x}^1),
+\end{equation}
+where $\bm{x} = \lambda \bm{x}^1 + (1-\lambda) \bm{x}^2$, $\lambda \in (0,1)$. By assumption we have that $[\nabla f(\bm{x})]-\nabla f(\bm{x}^1)]^{\text{T}}(\bm{x}-\bm{x}^1)\geq 0$, so $(1-\lambda)[\nabla f(\bm{x})-\nabla f(\bm{x}^1)]^{\text{T}}(\bm{x}^2-\bm{x}^1)\geq 0$. From this it follows that $\nabla f(\bm{x})^{\text{T}}(\bm{x}^2-\bm{x}^1) \geq \nabla f(\bm{x}^1)^{\text{T}}(\bm{x}^2-\bm{x}^1)$. By using this inequality and (\ref{meanvalue}), we get that $f(\bm{x}^2)\geq f(\bm{x}^1)+\nabla f(\bm{x}^1)^{\text{T}}(\bm{x}^2-\bm{x}^1)$.
+\\
+This completes the proof. $\square$
+
+
+\section{The Fundamental Theorem of global optimality}
+\subsubsection*{Theorem}
+Consider the problem:
+
+\begin{equation*}
+\begin{aligned}
+& {\text{minimise}}
+& & f(\bm{x}) \\
+& \text{subject to}
+& & \bm{x}\in S,\\
+\end{aligned}
+\end{equation*}
+If $S$ is a convex set and $f$ is a convex function on $S$, then every local minimum of $f$ over $S$ is also a global minimum.
+\subsubsection*{Proof}
+Suppose $\bm{x}^*$ is a local minimum, but not a global one. Consider then a vector $\bar{\bm{x}}\in S$, such that $f(\bar{\bm{x}})<f(\bm{x}^*)$. Let $\lambda \in (0,1)$. The following holds by the convexity of $S$ and $f$:
+
+\[
+    \lambda \bar{\bm{x}} + (1-\lambda)\bm{x}^* \in S
+\]
+\[
+    f(\lambda\bar{\bm{x}}+(1-\lambda)\bm{x}^*) \leq \lambda f(\bar{\bm{x}}) + (1-\lambda)f(\bm{x}^*) < f(\bm{x}^*)
+\]
+By choosing $\lambda>0$ small enough, we get a contradiction to the local optimality of $\bm{x}^*$. $\square$
+
+\section{Necessary optimality conditions, $C^1$ case}
+\subsubsection*{Theorem}
+Suppose that $S\subseteq \mathbbm{R}^n$ and that $f : \mathbbm{R}^n \rightarrow \mathbbm{R}\cup \{+\infty\}$ is in $C^1$ around a point $\bm{x}\in S$ for which $f(\bm{x})<+\infty$.
+\begin{enumerate}[label={(\alph*)}]
+    \item If $\bm{x}^* \in S$ is a local minimum of $f$ over $S$, then $\nabla f(\bm{x}^*)^{\text{T}}\bm{p} \geq 0$ holds for every feasible direction $\bm{p}$ at $\bm{x^*}$.
+    \item Suppose that $S$ is convex and that $f\in C^1(S)$. If $\bm{x^*}\in S$ is a local minimum of $f$ over $S$, then
+    \begin{equation}
+    \label{exp}
+    \nabla f(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*)\geq 0, \quad \bm{x}\in S
+    \end{equation}
+    holds.
+\end{enumerate}
+\subsubsection*{Proof}
+(a) We begin by Taylor expanding $f$ around $\bm{x}^*$:
+\begin{equation*}
+    f(\bm{x}^* + \alpha \bm{p}) = f(\bm{x}^*)+\alpha \nabla f(\bm{x}^*)^{\text{T}}\bm{p} + o(\alpha).
+\end{equation*}
+The proof is by contradiction. We know from a proposition that if there is a direction $\bm{p}$ for which it holds that $\nabla f(\bm{x}^*)^{\text{T}}\bm{p}<0$, then $f(\bm{x}^*+\alpha\bm{p})<f(\bm{x}^*)$ for all sufficiently small $\alpha>0$. Here it suffices to state that $\bm{p}$ should be a feasible direction in order to reach a contradiction to the local optimality of $\bm{x}^*$.
+\\\\
+(b) If $S$ is convex, then it holds that $\forall \bm{x}\in S,\; \bm{p}:= \bm{x}-\bm{x}^*$ is a feasible direction. Then (a) $\Rightarrow$ (\ref{exp}). $\square$
+
+\section{Necessary and sufficient global optimality conditions}
+\subsubsection*{Theorem}
+Suppose that $S\subseteq \mathbbm{R}^n$ is nonempty and convex. Let $f : \mathbbm{R}^n \rightarrow \mathbbm{R}$ be a convex function such that $f\in C^1(S)$. Then:
+\begin{equation}
+\label{stem}
+    \bm{x}^* \text{ is a global minimum of } f \text{ over } S \Leftrightarrow \nabla f(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*)\geq 0, \quad \bm{x}\in S
+\end{equation}
+
+\subsubsection*{Proof}
+$[\Rightarrow]$ This has been shown in the previous theorem, since a global minimum is a local minimum.
+\\
+$[\Leftarrow]$ The convexity of $f$ yields that $\forall \bm{y}\in S$,
+\begin{equation*}
+    f(\bm{y}) \geq f(\bm{x}^*) + \nabla f(\bm{x}^*){^\text{T}}(\bm{y}-\bm{x}^*)\geq f(\bm{x}^*),
+\end{equation*}
+where the second inequality stems from the second part of (\ref{stem}). $\square$
+
+\section{Karush–Kuhn–Tucker necessary conditions}
+\subsubsection*{Theorem}
+Assume that at a given point $\bm{x}^*\in S$ Abadie's constraint qualification holds. If $\bm{x}^*\in S$ is a local minimum of $f$ over $S$, then $\exists \boldsymbol{\mu}\in\mathbbm{R}^m$ such that:
+\begin{equation}
+\label{kkt}
+\begin{split}
+\nabla f(\bm{x}^*) + \sum_{i=1}^m \mu_i \nabla g_i(\bm{x}^*) &= \bm{0}^n\\
+\mu_i g_i(\bm{x}^*) &= 0, \quad  i = 1,\dots ,m, \\
+\boldsymbol{\mu}&\geq \bm{0}^m.
+\end{split}
+\end{equation}
+In other words,
+\begin{equation*}
+\left.\begin{array}{r}
+
+  \bm{x}^* \text{ local minimum of $f$ over $S$ } \\
+  \text{Abadie's CQ holds at $\bm{x}^*$ }
+
+\end{array}\right\} \Rightarrow \exists \boldsymbol{\mu}\in\mathbbm{R}^m : (\ref{kkt}) \text{ holds.}
+\end{equation*}
+
+\subsubsection*{Proof}
+From theory we know that $\mathring{F}(\bm{x}^*)\cap T_S(\bm{x}^*)=\emptyset$, where
+\begin{equation*}
+\mathring{F}(\bm{x}^*):=\{\bm{p}\in\mathbbm{R}^n \;|\; \nabla f(\bm{x}^*)^{\text{T}}\bm{p}<0\}
+\end{equation*}
+and 
+$T_S(\bm{x}^*)$ is the tangent cone. With $G(\bm{x}) := \{\bm{p}\in \mathbbm{R}^n \; | \; \nabla g_i(\bm{x})^{\text{T}}\bm{p}<0, i\in \mathcal{I}(\bm{x})\}$, where $\mathcal{I}(\bm{x})$ denotes the index set of active inequality constraints at $\bm{x}\in\mathbbm{R}^n$, we get due to our assumptions that $\mathring{F}(\bm{x}^*)\cup G(\bm{x}^*)=\emptyset$.
+\\\\
+Now construct a matrix $\bm{A}$ with columns $\nabla g_i(\bm{x}^*),\; i\in\mathcal{I}(\bm{x})$. Then, the system $\bm{A}^{\text{T}}\bm{p}<\bm{0}^{|\mathcal{I}(\bm{x}^*)|}$ and $-\nabla f(\bm{x}^*)^{\text{T}}\bm{p}>0$ has no solutions. $|\mathcal{I}(\bm{x}^*)|$ denotes the cardinality of the set $\mathcal{I}(\bm{x}^*)$. By Farkas' Lemma the system $\bm{A}\boldsymbol{\xi} = -\nabla f(\bm{x}^*),\; \boldsymbol{\xi} \geq \bm{0}^{|\mathcal{I}(\bm{x}^*)|}$ has a solution. Define the vector $\boldsymbol{\mu}_{\mathcal{I}(\bm{x}^*)} = \boldsymbol{\xi}$, and $\mu_i = 0$ for $i\not\in\mathcal{I}(\bm{x}^*)$. Then $\boldsymbol{\mu}$ verifies the KKT conditions in (\ref{kkt}). $\square$
+
+\section{Sufficiency of the Karush–Kuhn–Tucker conditions for convex problems}
+\subsubsection*{Theorem}
+Assume that the problem
+\begin{equation*}
+\begin{aligned}
+& {\text{minimise}}
+& & f(\bm{x}) \\
+& \text{subject to}
+& & \bm{x}\in S,\\
+\end{aligned}
+\end{equation*}
+with the feasible set $S$ given by:
+\begin{equation*}
+S:=\{\bm{x}\in\mathbbm{R}^n\; | \; g_i(\bm{x})<0,\quad i=1,\dots,m;\;\, h_j(\bm{x}) = 0, \quad j=1,\dots,l\}
+\end{equation*}
+is convex, i.e. the objective function $f$ as well as the functions $g_i$ are convex and the function $h_j$ are affine. Assume further that for $\bm{x}^*\in S$ the KKT conditions:
+\begin{equation}
+\label{gKKT}
+\begin{split}
+    \nabla f(\bm{x}^*) + \sum_{i=1}^m \tilde{\mu}_i\nabla g_i(\bm{x}^*) + \sum_{j=1}^l \tilde{\lambda}_j \nabla h_j(\bm{x}^*) &= \bm{0}^n,\\
+    \tilde{\mu}_i g_i(\bm{x}^*)&=0, \quad i=1,\dots,m,\\
+    \boldsymbol{\tilde{\mu}}&\geq \bm{0}^m.
+\end{split}
+\end{equation}
+are satisfied. Then $\bm{x}^*$ is a globally optimal solution of the above problem.
+In other words,
+\begin{equation*}
+\left.\begin{array}{r}
+
+  \text{the above problem is convex} \\
+  \text{the KKT conditions (\ref{gKKT}) hold at $\bm{x}^*$}
+
+\end{array}\right\} \Rightarrow \bm{x}^* \text{ global minimum in the above problem}.
+\end{equation*}
+
+\subsubsection*{Proof}
+Choose an arbitrary $\bm{x}\in S$. Then by the convexity of the functions $g_i$ it holds that
+\begin{equation}
+\label{eq1}
+    -\nabla g_i(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*)\geq g_i(\bm{x}^*) - g_i(\bm{x}) = -g_i(\bm{x}) \geq 0, \quad \forall i \in\mathcal{I}(\bm{x}^*),
+\end{equation}
+and using the affinity of the functions $h_j$ we get that
+\begin{equation}
+\label{eq2}
+-\nabla h_j(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*) = h_j(\bm{x}^*) - h_j(\bm{x}) = 0, \quad \forall j = 1,\dots,l.
+\end{equation}
+By using the convexity of the objective function, the first two parts of (\ref{gKKT}), the non-negativity of $\mu_i$ and equations (\ref{eq1}) and (\ref{eq2}) we obtain the inequality
+\begin{equation*}
+\begin{split}
+f(\bm{x}) -f(\bm{x}^*) &\geq \nabla f(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*)\\
+&=-\sum_{i\in\mathcal{I}(\bm{x}^*)} \mu_i \nabla g_i(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*) - \sum_{j=1}^l \lambda_j \nabla h_j(\bm{x}^*)^{\text{T}}(\bm{x}-\bm{x}^*)\\
+&\geq 0.
+\end{split}
+\end{equation*}
+Since $\bm{x}$ was arbitrary, $\bm{x}^*$ solves the problem. $\square$
+
+\section{Relaxation theorem}
+\subsubsection*{Definitions}
+Given the problem to find
+\begin{equation}
+\label{relax}
+\begin{aligned}
+& \underset{x}{f^* := \text{ infimum }}
+& & f(\bm{x}), \\
+& \text{subject to}
+& & \bm{x}\in S,\\
+\end{aligned}
+\end{equation}
+where $f:\mathbbm{R}^n \rightarrow \mathbbm{R}$ is a given function and $S\subseteq\mathbbm{R}^n$, we define a relaxation to (\ref{relax}) to be a problem of the following form: find
+\begin{equation}
+\label{relax2}
+\begin{aligned}
+& \underset{x}{f_{R}^* := \text{ infimum }}
+& & f_R(\bm{x}), \\
+& \text{subject to}
+& & \bm{x}\in S_R,\\
+\end{aligned}
+\end{equation}
+where $f_R : \mathbbm{R}^n \rightarrow \mathbbm{R}$ is a function with the property that $f_R<f$ on $S$, and where $S\subseteq S_R$.
+\subsubsection*{Theorem}
+
+\begin{enumerate}[label={(\alph*)}]
+    \item $[$\textit{relaxation}$]$ $f_{R}^* \leq f^*$
+    \item $[$\textit{infeasibility}$]$ If (\ref{relax2}) is infeasible, then so is (\ref{relax}).
+    \item $[$\textit{optimal relaxation}$]$ If the problem (\ref{relax2}) has an optimal solution, $\bm{x}_{R}^*$, for which it holds that
+    \begin{equation*}
+     \bm{x}_{R}^*\in S \text{ and } f_{R}( \bm{x}_{R}^*) = f( \bm{x}_{R}^*),
+    \end{equation*}
+    then  $\bm{x}_{R}^*$ is an optimal solution to (\ref{relax}) as well.
+\end{enumerate}
+
+\subsubsection*{Proof}
+The result in (a) is obvious, since every solution feasible in (\ref{relax}) is also feasible in (\ref{relax2}) and has a lower objective value in the latter problem. The result in (b) follows for similar reasons. For the result in (c), we note that
+\begin{equation*}
+f( \bm{x}_{R}^*) = f_R(\bm{x}_{R}^*) \leq f_R(\bm{x}) \leq f(\bm{x}), \quad \bm{x}\in S,
+\end{equation*}
+from which the result follows. $\square$
+
+\section{Weak Duality Theorem}
+\subsubsection*{Theorem}
+Consider the following two problems:
+\begin{equation}
+\label{prob1}
+\begin{aligned}
+& \underset{x}{f^* := \text{ infimum }}
+& & f(\bm{x}), \\
+& \text{subject to}
+& & \bm{x}\in X,\\
+&&& g_i(\bm{x})\leq 0, \quad i=1,\dots,m,
+\end{aligned}
+\end{equation}
+where $f : \mathbbm{R}^n \rightarrow \mathbbm{R}$ and $g_i : \mathbbm{R}^n \rightarrow \mathbbm{R}$ are given functions, and $X\subseteq\mathbbm{R}^n$. For this problem we assume that $-\infty < f^* < \infty$.
+
+\begin{equation}
+\label{prob2}
+\begin{aligned}
+& \underset{\mu}{\text{ maximise }}
+& & q(\boldsymbol{\mu}), \\
+& \text{subject to}
+& & \boldsymbol{\mu}\geq \bm{0}^m, \\
+\end{aligned}
+\end{equation}
+where $q(\boldsymbol{\mu}) := \underset{x\in X}{\text{ infimum }} L(\bm{x},\boldsymbol{\mu})$, called the Lagrangian dual function.
+\\\\
+Let $\bm{x}$ and $\boldsymbol{\mu}$ be feasible in problems (\ref{prob1}) and (\ref{prob2}), respectively. Then $q(\boldsymbol{\mu})\leq f(\bm{x})$ and in particular, $q^*<f^*$.
+\subsubsection*{Proof}
+$\forall \boldsymbol{\mu} > \bm{0}^m$ and $\bm{x}\in X$ with $\bm{g}(\bm{x})\leq \bm{0}^m$, 
+\begin{equation*}
+q(\boldsymbol{\mu}) = \underset{z\in X}{\text{ infimum }} L(\bm{z}, \boldsymbol{\mu}) \leq f(\bm{x}) + \boldsymbol{\mu}^{\text{T}} \bm{g}(\bm{x}) \leq f(\bm{x}),
+\end{equation*}
+so
+\begin{equation*}
+q^* = \underset{\boldsymbol{\mu}>\bm{0}^m}{\text{ supremum }} q(\boldsymbol{\mu}) \leq \underset{\bm{x}\in X:\bm{g}(\bm{x})\leq \bm{0}^m}{ \text{infimum} } f(\bm{x}) = f^*
+\end{equation*}
+The result follows. $\square$
+
+\section{Global optimality conditions in the absence of a duality gap}
+\subsubsection*{Theorem}
+The vector $(\bm{x}^*, \boldsymbol{\mu}^*)$ is a pair of primal optimal solution and Lagrange multiplier vector iff
+
+
+\begin{equation}
+\label{gloopt}
+\begin{aligned}
+ \boldsymbol{\mu}^* \geq \bm{0}^m,&
+& & \textit{(Dual feasibility)}\\
+ \bm{x}^* \in \underset{\bm{x}\in X}{\text{ arg min } L(\bm{x}^*, \boldsymbol{\mu}^*)},&
+& & \textit{(Lagrangian optimality)}\\
+ \bm{x}^*\in X, \quad \bm{g}(\bm{x}^*)\leq \bm{0}^m,&
+& & \textit{(Primal feasibility)} \\
+\mu_i^*(\bm{x}^*)=0, \quad i= 1,\dots,m,.&
+& & (\textit{Complementary slackness})
+\end{aligned}
+\end{equation}
+
+\subsubsection*{Proof}
+Suppose that the pair $(\bm{x}^*,\boldsymbol{\mu}^*)$ satisfies (\ref{gloopt}), then we have from the Dual feasibility that the Lagrangian problem to minimise $L(\bm{x},\boldsymbol{\mu}^*)$ over $\bm{x}\in X$ is a Lagrangian relaxation of (\ref{prob1}). We also have that $\bm{x}^*$ solves (\ref{prob1}) according to the Lagrangian optimality. The Primal feasiblity shows that $\bm{x}^*$ is feasible in (\ref{prob1}), and the Complementary slackness implies that $L(\bm{x}^*, \boldsymbol{\mu}^*) = f(\bm{x}^*)$. We now use the Relaxation Theorem which gives us that $\bm{x}^*$ is optimal in (\ref{prob1}), which implies that $\boldsymbol{\mu}^*$ is a Lagrange multiplies vector.
+
+Contrarily, if $(\bm{x}^*, \boldsymbol{\mu}^*)$ is a pair of optimal primal solution and Lagrange multiplier vector, then they are primal and dual feasible, respectively. The Lagrangian optimality and Complementary slackness follow from the Theorem of Lagrange multipliers and global optima. $\square$
+
+\section{Existence and properties of optimal solutions}
+\subsubsection*{Theorem}
+Let $P := \{ \bm{x}\in \mathbbm{R}^n \,|\, \bm{Ax}=\bm{b}; \bm{x}\geq\bm{0}^n \}$ and $V := \{\bm{v}^1,\dots,\bm{v}^k\}$ be the set of extreme points of $P$. Furhter let $C=:\{ \bm{x}\in \mathbbm{R}^n \; | \; \bm{Ax}=\bm{0}^m; \bm{x}\geq \bm{0}^n\}$ and $D:=\{ \bm{d}^1,\dots,\bm{d}^r\}$ be the set of extreme directions of $C$. Consider the linear program:
+
+\begin{equation}
+\label{exist}
+\begin{aligned}
+& {\text{minimise}}
+& & z=\bm{c}^{\text{T}}\bm{x}, \\
+& \text{subject to}
+& & \bm{x}\in P. \\
+\end{aligned}
+\end{equation}
+
+(a) This problem has a finite optimal solution iff $P$ is nonempty and $z$ is lower bounded on $P$, i.e. $P$ is nonempty and $\bm{c}^{\text{T}}\bm{d}^j\geq 0\; \forall \, \bm{d}^j\in D$. 
+
+(b) If the problem has a finite optimal solution, then $\exists$ an optimal solution among the extreme points.
+\subsubsection*{Proof}
+(a) Let $\bm{x}\in P$. Then it follows from the Representation Theorem that
+\begin{equation}
+\label{repr}
+\bm{x} = \sum_{i=1}^k \alpha_i \bm{v}^i + \sum_{j=1}^r \beta_j \bm{d}^j,
+\end{equation}
+for some $\alpha_1,\dots,\alpha_k\geq 0$ such that $\sum_{i=1}^k \alpha_i = 1$, and $\beta_1,\dots,\beta_r\geq 0$. Then it follows that
+
+\begin{equation}
+\label{repr2}
+\bm{c}^{\text{T}}\bm{x} = \sum_{i=1}^k \alpha_i \bm{c}^{\text{T}}\bm{v}^i + \sum_{j=1}^r \beta_j \bm{c}^{\text{T}}\bm{d}^j.
+\end{equation}
+If we let $\bm{x}$ vary over $P$, the value of $z$ will correspond to variations of the weights $\alpha_i$ and $\beta_j$. The first term in the right-hand side of (\ref{repr2}) is bounded as $\sum_{i=1}^k \alpha_i = 1$. The second term is lower bounded as $\bm{x}$ varies over $P$ iff $\bm{c}^{\text{T}}\bm{d}^j \geq 0$ holds $\forall \bm{d}^j \in D$, since otherwise we could let $\beta \rightarrow +\infty$ for an index $j$ with $\bm{c}^{\text{T}}\bm{d}^j<0$, and get that $z\rightarrow -\infty$. If $\bm{c}^{\text{T}}\bm{d}^j\geq 0\; \forall \, \bm{d}^j \in D$, then it is clearly optimal to choose $\beta_j=0$ for $j=1,\dots,r$. It remains to search for the optimal solution in the convex hull of $V$.
+
+(b) Assume that $\bm{x}\in P$ is an optimal solution and let $\bm{x}$ be represented as in (\ref{repr}). From the above we have that we can choose $\beta_1=\dots =\beta_r = 0$, so we can assume that
+\begin{equation*}
+\bm{x} = \sum_{i=1}^k \alpha_i \bm{v}^i.
+\end{equation*}
+Further let 
+\begin{equation*}
+a \in \underset{i\in\{ 1,\dots,k \}}{\text{ arg minimum }} \bm{c}^{\text{T}}\bm{v}^i.
+\end{equation*}
+Then,
+\begin{equation*}
+\bm{c}^{\text{T}}\bm{v}^a = \bm{c}^{\text{T}}\bm{v}^a \sum_{i=1}^k \alpha_i = \sum_{i=1}^k \alpha_i \bm{c}^{\text{T}}\bm{v}^a \leq \sum_{i=1}^k \alpha_i \bm{c}^{\text{T}}\bm{v}^i = \bm{c}^{\text{T}}\bm{x},
+\end{equation*}
+that is, the extreme point $\bm{v}^a$ is a global minimum. $\square$
+
+\section{Finiteness of the Simplex method}
+\subsubsection*{Theorem}
+If all of the basic feasible solutions (BFS) are non-degenerate, then the simplex algorithm terminates after a finite number of iterations.
+\subsubsection*{Proof}
+A BFS is non-degenerate $\Rightarrow$ it has exactly $m$ positive components, and hence has a unique associated basis. In this case, in the minimum ratio test,
+\begin{equation*}
+\mu^* = \underset{i\in\{ k\; |\; (\bm{B}^{-1}\bm{N}_j)_k > 0\}}{\text{ minimum }} \frac{(\bm{B}^{-1}\bm{b})_i}{(\bm{B}^{-1}\bm{N}_j)_i}>0.
+\end{equation*}
+Therefore, at each iteration the objective value decreases and hence a BFS that has appeared once can never reappear. Further, from a Corollary it follows that the number of extreme points, hence the number of BFS, is finite. $\square$
+
+\section{Strong Duality Theorem}
+Consider the primal linear program (P):
+
+\begin{equation*}
+\begin{aligned}
+& {\text{minimise}}
+& & z=\bm{c}^{\text{T}}\bm{x}, \\
+& \text{subject to}
+& & \bm{Ax}=\bm{b}. \\
+&&& \bm{x} \geq \bm{0}^n,
+\end{aligned}
+\end{equation*}
+
+and its dual linear program (D):
+
+\begin{equation*}
+\begin{aligned}
+& {\text{maximise}}
+& & w=\bm{b}^{\text{T}}\bm{y}, \\
+& \text{subject to}
+& & \bm{A}^{\text{T}}\bm{y}\leq\bm{c}. \\
+&&& \bm{y} \text{ free,}
+\end{aligned}
+\end{equation*}
+where $\bm{A}\in\mathbbm{R}^{m \times n}, \bm{b}\in\mathbbm{R}^m$ and $\bm{c}\in\mathbbm{R}^n$.
+\subsubsection*{Theorem}
+If the primal problem (P) and the dual problem (D) have feasible solutions, then there exists optimal solutions to (P) and (D), and their optimal objective function values are equal.
+\subsubsection*{Proof}
+Since the dual (D) is feasible it follows from the Weak Duality Theorem that the objective function value of (P) is bounded from below. Hence the Theorem of Existence and properties of optimal solutions implies that there exists an optimal BFS, $\bm{x}^*=(\bm{x}_B^{\text{T}},\bm{x}_N^{\text{T}})^{\text{T}}$, to (P). We construct an optimal solution to (D):
+\begin{equation*}
+(\bm{y}^*)^{\text{T}} := \bm{c}_B^{\text{T}}\bm{B}^{-1}.
+\end{equation*}
+Since $\bm{x}^*$ is an optimal BFS the reduced costs of the non-basic variables are non-negative, which gives that $\bm{A}^{\text{T}}\bm{y}^* \leq \bm{c}$. Hence $\bm{y}^*$ is feasible to (D). Further we have that
+\begin{equation*}
+\bm{b}^{\text{T}}\bm{y}^* = \bm{b}^{\text{T}}(\bm{B}^{-1})^{\text{T}}\bm{c}_B = \bm{c}_B^{\text{T}}\bm{B}^{-1}\bm{b} = \bm{c}_B^{\text{T}}\bm{x}_B = \bm{c}^{\text{T}}\bm{x}^*,
+\end{equation*}
+so by a Corollary we have that $\bm{y}^*$ is an optimal solution to (D). $\square$
+
+\section{Complementary Slackness Theorem (I)}
+\subsubsection*{Theorem}
+Let $\bm{x}$ be a feasible solution to (P) and $\bm{y}$ a feasible solution to (D). Then
+\begin{equation}
+\label{comp}
+\left.\begin{array}{r}
+
+  \bm{x} \text{ optimal to (P)} \\
+  \bm{y} \text{ optimal to (D)}
+
+\end{array}\right\} \Leftrightarrow x_j(c_j-\bm{A}_{.j}^{\text{T}}\bm{y})=0, \quad j=1,\dots,n,
+\end{equation}
+where $\bm{A}_{.j}$ is the $j^{\text{th}}$ column of $\bm{A}$.
+\subsubsection*{Proof}
+If $\bm{x}$ and $\bm{y}$ are feasible we have that 
+\begin{equation}
+\label{fact}
+\bm{c}^{\text{T}}\bm{x} \geq (\bm{A}^{\text{T}}\bm{y})^{\text{T}}\bm{x} = \bm{y}^{\text{T}}\bm{Ax} = \bm{b}^{\text{T}}\bm{y}.
+\end{equation}
+Further, by the Strong Duality Theorem and the Weak Duality Theorem, $\bm{x}$ and $\bm{y}$ are optimal iff $\bm{c}^{\text{T}}\bm{x} = \bm{b}^{\text{T}}\bm{y}$, so (\ref{fact}) holds with equality, i.e.,
+\begin{equation*}
+\bm{c}^{\text{T}}\bm{x} = (\bm{A}^{\text{T}}\bm{y})^{\text{T}}\bm{x} \Leftrightarrow \bm{x}^{\text{T}}(\bm{c}-\bm{A}^{\text{T}}\bm{y})=0.
+\end{equation*}
+Since $\bm{x} \geq \bm{0}^n$ and $\bm{A}^{\text{T}}\bm{y} \leq \bm{c}$, $\bm{x}^{\text{T}}(\bm{c}-\bm{A}^{\text{T}}\bm{y})=0$ is equivalent to each term in the sum being zero, that is (\ref{comp}) holds. $\square$
+
+\section{Complementary Slackness Theorem (II)}
+Often the Complementary Slackness Theorem is stated for the primal-dual pair given by:
+\begin{equation}
+\label{comp1}
+\begin{aligned}
+& {\text{maximise}}
+& & \bm{c}^{\text{T}}\bm{x}, \\
+& \text{subject to}
+& & \bm{Ax}\leq\bm{b}. \\
+&&& \bm{x} \geq \bm{0}^n,
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\label{comp2}
+\begin{aligned}
+& {\text{minimise}}
+& & \bm{b}^{\text{T}}\bm{y}, \\
+& \text{subject to}
+& & \bm{A}^{\text{T}}\geq\bm{c}. \\
+&&& \bm{y} \geq \bm{0}^m,
+\end{aligned}
+\end{equation}
+
+\subsubsection*{Theorem}
+Let $\bm{x}$ and $\bm{y}$ be feasible solutions to (\ref{comp1}) and (\ref{comp2}), respectively. Then $\bm{x}$ and $\bm{y}$ are optimal to (\ref{comp1}) and (\ref{comp2}), respectively, iff
+
+\begin{equation*}
+\begin{split}
+x_j(c_j - \bm{y}^{\text{T}}\bm{A}_{.j})=0, \quad j=1,\dots,n,\\
+y_i(\bm{A}_{i.}\bm{x}-b_i)=0, \quad i=1,\dots,m,
+\end{split}
+\end{equation*}
+where $\bm{A}_{.j}$ is the $j^{\text{th}}$ column of $A$ and $\bm{A}_{i.}$ the $i^{\text{th}}$ row of $\bm{A}$. The proof is similar to that of Complementary Slackness Theorem (I).
+
+\section{Global convergence of a penalty method}
+\subsubsection*{Theorem}
+Consider the constrained problem:
+
+\begin{equation}
+\label{constr}
+\begin{aligned}
+& {\text{minimise}}
+& & f(\bm{x}) \\
+& \text{subject to}
+& & \bm{x}\in S, \\
+\end{aligned}
+\end{equation}
+where $S\subseteq\mathbbm{R}^n$ is a nonempty, closed set and $f : \mathbbm{R}^n \rightarrow \mathbbm{R}$ is a given differentiable function.
+
+Assume that this problem has optimal solutions. Then every limit point of the sequence $\{\bm{x}^*_{\nu}\}, \nu \rightarrow +\infty$, of globally optimal solutions to 
+\begin{equation}
+\label{nu}
+\begin{aligned}
+\underset{\bm{x}\in\mathbbm{R}^n}{\text{ minimise}} f(\bm{x})+\nu \tilde{\chi}_S(\bm{x})
+\end{aligned}
+\end{equation}
+is globally optimal in the problem (\ref{constr}). In other words,
+
+\begin{equation*}
+\label{comp}
+\left.\begin{array}{r}
+
+  \bm{x}^*_{\nu} \text{ globally optimal in (\ref{nu})} \\
+  \bm{x}^*_{\nu} \rightarrow \bm{x}^* \text{ as } \nu \rightarrow +\infty
+
+\end{array}\right\} \Rightarrow \bm{x}^* \text{ globally optimal in (\ref{constr})}.
+\end{equation*}
+
+\subsubsection*{Proof}
+Let $\bm{x}^*$ denote an arbitrary globally optimal solution to (\ref{constr}). From the inequality
+\begin{equation}
+\label{hejhopp}
+    f(\bm{x}^*_{\nu})+\nu \tilde{\chi}_S(\bm{x}^*_{\nu})\leq f(\bm{x}^*),
+\end{equation}
+and from a Lemma (penalization constitutes a relaxation) we obtain uniform bounds on the penalty term $\nu \tilde{\chi}_S(\bm{x}^*_{\nu})\; \forall \, \nu \geq 1:$
+\begin{equation*}
+0\leq\nu\tilde{\chi}_S(\bm{x}^*_{\nu})\leq f(\bm{x}^*) - f(\bm{x}^*_1).
+\end{equation*}
+Thus $\tilde{\chi}_S(\bm{x}^*_{\nu}) \to 0$ as $\nu \to +\infty$ and every limit point of the sequence $\{\bm{x}^*_{\nu} \}$ must be feasible in (\ref{constr}), due to the continuity of $\tilde{\chi}_S$.
+
+Now let $\hat{\bm{x}}$ denote an arbitrary limit point of $\{ \bm{x}^*_{\nu} \}$, that is,
+\begin{equation*}
+\lim_{k\to \infty} \bm{x}^*_{\nu_k} = \hat{\bm{x}},
+\end{equation*}
+for some sequence $\{ \nu_k \}$ converging to infinity. Then, we have the following chain of inequalities:
+\begin{equation*}
+    f(\hat{\bm{x}}) = \lim_{k \to + \infty}f(\bm{x}^*_{\nu_k}) \leq \lim_{k\to +\infty}\{ f(\bm{x}^*_{\nu_k})+\nu_k \tilde{\chi}_S(\bm{x}^*_{\nu_k})\} \leq f(\bm{x}^*),
+\end{equation*}
+where the last inequality follows from (\ref{hejhopp}). However, due to the feasiblity of $\hat{\bm{x}}$ in (\ref{constr}) the reverse inequality $f(\bm{x}^*) \leq f(\hat{\bm{x}})$ must also hold. The two inequalities combined imply the required claim. $\square$
+%\newpage
+%\begin{thebibliography}{9}
+%\bibitem{qwe}
+
+%refera till bok
+%[#] Författares initial/er. Efternamn, Bok titel: Undertitel, uppl. (om ej första), vol. (om verk med flera volymer) Utgivningsort: Utgivare, år, ss. # (vid behov).
+%
+%\bibitem{qwe}
+%    \emph{qwe.}\\ 
+
+%\end{thebibliography}
+%\newpage
+%\appendix
+%\section{Appendix}
+\end{document}
